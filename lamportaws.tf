@@ -47,7 +47,7 @@ resource "aws_security_group" "allow_all" {
   }
 }
 
-resource "aws_instance" "hadoop1" {
+resource "aws_instance" "lamport1" {
   ami           = "ami-fce3c696"
   instance_type = "t2.micro"
   tags {
@@ -56,26 +56,26 @@ resource "aws_instance" "hadoop1" {
   //key_name = "${aws_key_pair.bdm.id}}" 
   key_name = "bdmfirstkey" 
   provisioner "local-exec" {
-    command = "echo ${aws_instance.hadoop1.public_ip} >> file.txt"
+    command = "echo ${aws_instance.lamport1.public_ip} >> file.txt"
     }
-  security_groups = ["${aws_security_group.allow_all.id}"]
+  security_groups = ["${aws_security_group.allow_all.name}"]
 }
 
-resource "aws_instance" "hadoop2" {
+resource "aws_instance" "lamport2" {
   ami           = "ami-fce3c696"
   instance_type = "t2.micro"
   tags {
         Name = "LamportNode2"
     }
   provisioner "local-exec" {
-    command = "echo ${aws_instance.hadoop2.public_ip} >> file.txt"
+    command = "echo ${aws_instance.lamport2.public_ip} >> file.txt"
     }
-  security_groups = ["${aws_security_group.allow_all.id}"]
+  security_groups = ["${aws_security_group.allow_all.name}"]
   //key_name = "${aws_key_pair.bdm.id}}" 
   key_name = "bdmfirstkey" 
 }
 
-resource "aws_instance" "hadoop3" {
+resource "aws_instance" "lamport3" {
   ami           = "ami-fce3c696"
   instance_type = "t2.micro"
   tags {
@@ -83,10 +83,10 @@ resource "aws_instance" "hadoop3" {
     }
   //key_name = "${aws_key_pair.bdm.id}}" 
   key_name = "bdmfirstkey" 
-  security_groups = ["${aws_security_group.allow_all.id}"]
+  security_groups = ["${aws_security_group.allow_all.name}"]
 
   provisioner "local-exec" {
-    command = "echo ${aws_instance.hadoop3.public_ip} >> file.txt"
+    command = "echo ${aws_instance.lamport3.public_ip} >> file.txt"
     }
 }
 

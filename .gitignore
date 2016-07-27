@@ -1,2 +1,6 @@
-variables.tf
+terraform.tfvars
+file.txt
+terraform.log
+log
+terraform.tfstate*
 

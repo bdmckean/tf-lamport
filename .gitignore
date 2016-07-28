@@ -1,5 +1,6 @@
 terraform.tfvars
 file.txt
+lamport_ips.txt
 terraform.log
 log
 terraform.tfstate*

@@ -28,6 +28,7 @@ provider "aws" {
     region = "${var.region}"
 }
 
+
 resource "aws_security_group" "allow_all" {
   name = "allow_all"
   description = "Allow all inbound traffic"
@@ -45,6 +46,11 @@ resource "aws_security_group" "allow_all" {
       protocol = "-1"
       cidr_blocks = ["0.0.0.0/0"]
   }
+  provisioner "local-exec" {
+    command = "echo removing previous lamport_ips.txt"
+    command = "rm lamport_ips.txt"
+  }
+
 }
 
 resource "aws_instance" "lamport1" {
@@ -53,10 +59,9 @@ resource "aws_instance" "lamport1" {
   tags {
         Name = "LamportNode1"
     }
-  //key_name = "${aws_key_pair.bdm.id}}" 
-  key_name = "bdmfirstkey" 
+  key_name = "${var.key_name}"
   provisioner "local-exec" {
-    command = "echo ${aws_instance.lamport1.public_ip} >> file.txt"
+    command = "echo ${aws_instance.lamport1.public_ip} >> lamport_ips.txt"
     }
   security_groups = ["${aws_security_group.allow_all.name}"]
 }
@@ -68,11 +73,10 @@ resource "aws_instance" "lamport2" {
         Name = "LamportNode2"
     }
   provisioner "local-exec" {
-    command = "echo ${aws_instance.lamport2.public_ip} >> file.txt"
+    command = "echo ${aws_instance.lamport2.public_ip} >> lamport_ips.txt"
     }
   security_groups = ["${aws_security_group.allow_all.name}"]
-  //key_name = "${aws_key_pair.bdm.id}}" 
-  key_name = "bdmfirstkey" 
+  key_name = "${var.key_name}"
 }
 
 resource "aws_instance" "lamport3" {
@@ -81,12 +85,11 @@ resource "aws_instance" "lamport3" {
   tags {
         Name = "LamportNode3"
     }
-  //key_name = "${aws_key_pair.bdm.id}}" 
-  key_name = "bdmfirstkey" 
+  key_name = "${var.key_name}"
   security_groups = ["${aws_security_group.allow_all.name}"]
 
   provisioner "local-exec" {
-    command = "echo ${aws_instance.lamport3.public_ip} >> file.txt"
+    command = "echo ${aws_instance.lamport3.public_ip} >> lamport_ips.txt"
     }
 }
 

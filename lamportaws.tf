@@ -48,49 +48,22 @@ resource "aws_security_group" "allow_all" {
   }
   provisioner "local-exec" {
     command = "echo removing previous lamport_ips.txt"
-    command = "rm lamport_ips.txt"
+    command = "rm -f lamport_ips.txt"
   }
 
 }
 
-resource "aws_instance" "lamport1" {
+resource "aws_instance" "lamport" {
+  count = "3"
   ami           = "ami-fce3c696"
   instance_type = "t2.micro"
   tags {
-        Name = "LamportNode1"
+        Name = "${format("LamportNode-%03d",count.index)}"
     }
   key_name = "${var.key_name}"
   provisioner "local-exec" {
-    command = "echo ${aws_instance.lamport1.public_ip} >> lamport_ips.txt"
+    command = "echo ${self.tags.Name} ${self.public_ip} >> lamport_ips.txt"
     }
   security_groups = ["${aws_security_group.allow_all.name}"]
 }
-
-resource "aws_instance" "lamport2" {
-  ami           = "ami-fce3c696"
-  instance_type = "t2.micro"
-  tags {
-        Name = "LamportNode2"
-    }
-  provisioner "local-exec" {
-    command = "echo ${aws_instance.lamport2.public_ip} >> lamport_ips.txt"
-    }
-  security_groups = ["${aws_security_group.allow_all.name}"]
-  key_name = "${var.key_name}"
-}
-
-resource "aws_instance" "lamport3" {
-  ami           = "ami-fce3c696"
-  instance_type = "t2.micro"
-  tags {
-        Name = "LamportNode3"
-    }
-  key_name = "${var.key_name}"
-  security_groups = ["${aws_security_group.allow_all.name}"]
-
-  provisioner "local-exec" {
-    command = "echo ${aws_instance.lamport3.public_ip} >> lamport_ips.txt"
-    }
-}
-
 

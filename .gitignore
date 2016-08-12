@@ -4,4 +4,8 @@ lamport_ips.txt
 terraform.log
 log
 terraform.tfstate*
+lamport_hosts.txt
+*.out
+*.err
+
 

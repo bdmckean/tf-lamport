@@ -1,4 +1,6 @@
-
+#
+# Copyright (c) 2016 Brian McKean
+#
 # using ssh on remote server ...
 
 ##Run basic update
